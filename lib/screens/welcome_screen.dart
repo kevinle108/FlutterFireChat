@@ -15,7 +15,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
-  int animationCount = 0;
 
   @override
   void initState() {
