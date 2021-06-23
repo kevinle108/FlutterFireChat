@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
+
   // User loggedIn;
   //
   // ChatScreen({this.loggedIn});
@@ -38,7 +39,7 @@ class _ChatScreenState extends State<ChatScreen> {
   //     print(message.data());
   //   }
   // }
-  
+
   // updates and prints whenever a new chat is sent and received
   // void messageStream() async {
   //   await for (var snapshot in _fireStore.collection('messages').snapshots()) {
@@ -54,7 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
     getCurrentUser();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,9 +66,9 @@ class _ChatScreenState extends State<ChatScreen> {
               onPressed: () {
                 //Implement logout functionality
                 // getMessages();
-                messageStream();
+                // messageStream();
 
-                // _auth.signOut();
+                _auth.signOut();
                 // Navigator.pop(context);
               }),
         ],
@@ -80,6 +80,24 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            StreamBuilder<QuerySnapshot>(
+              stream: _fireStore.collection('messages').snapshots(),
+              builder: (context, snapshot) {
+                List<Text> messageWidgets = [];
+                if (snapshot.hasData) {
+                  final messages = snapshot.data!.docs;
+                  for (var message in messages) {
+                    final messageText = message.get('text');
+                    final messageSender = message.get('sender');
+                    final messageWidget = Text('$messageText from $messageSender');
+                    messageWidgets.add(messageWidget);
+                  }
+                }
+                return Column(
+                  children: messageWidgets,
+                );
+              },
+            ),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -99,8 +117,8 @@ class _ChatScreenState extends State<ChatScreen> {
                       //Implement send functionality.
                       if (loggedInUser != null) {
                         _fireStore.collection('messages').add({
-                          'text' : messageText,
-                          'sender' : loggedInUser!.email,
+                          'text': messageText,
+                          'sender': loggedInUser!.email,
                         });
                       }
                     },
