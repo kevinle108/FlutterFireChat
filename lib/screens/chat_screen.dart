@@ -136,7 +136,7 @@ class MessageBubble extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: sender == 'kev@gmail.com' ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
