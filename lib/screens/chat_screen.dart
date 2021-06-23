@@ -40,13 +40,13 @@ class _ChatScreenState extends State<ChatScreen> {
   // }
   
   // updates and prints whenever a new chat is sent and received
-  void messageStream() async {
-    await for (var snapshot in _fireStore.collection('messages').snapshots()) {
-      for (var message in snapshot.docs) {
-        print(message.data());
-      }
-    } 
-  }
+  // void messageStream() async {
+  //   await for (var snapshot in _fireStore.collection('messages').snapshots()) {
+  //     for (var message in snapshot.docs) {
+  //       print(message.data());
+  //     }
+  //   }
+  // }
 
   @override
   void initState() {
