@@ -32,11 +32,20 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getMessages() async {
-    final messages = await _fireStore.collection('messages').get();
-    for (var message in messages.docs) {
-      print(message.data());
-    }
+  // void getMessages() async {
+  //   final messages = await _fireStore.collection('messages').get();
+  //   for (var message in messages.docs) {
+  //     print(message.data());
+  //   }
+  // }
+  
+  // updates and prints whenever a new chat is sent and received
+  void messageStream() async {
+    await for (var snapshot in _fireStore.collection('messages').snapshots()) {
+      for (var message in snapshot.docs) {
+        print(message.data());
+      }
+    } 
   }
 
   @override
@@ -56,7 +65,8 @@ class _ChatScreenState extends State<ChatScreen> {
               icon: Icon(Icons.close),
               onPressed: () {
                 //Implement logout functionality
-                getMessages();
+                // getMessages();
+                messageStream();
 
                 // _auth.signOut();
                 // Navigator.pop(context);
