@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class ChatScreen extends StatefulWidget {
   static String id = 'chat_screen';
+  // User loggedIn;
+  //
+  // ChatScreen({this.loggedIn});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -12,22 +15,28 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
+  var loggedInUser;
+
 
 
   void getCurrentUser() async {
-    final user = await _auth.currentUser;
-    if (user != null) {
-      loggedInUser = user;
+    try {
+      final user = await _auth.currentUser;
+      if (user != null) {
+        loggedInUser = user;
+        print(loggedInUser.email);
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    print(loggedInUser.email);
+    getCurrentUser();
   }
+
 
   @override
   Widget build(BuildContext context) {
