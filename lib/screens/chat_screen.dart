@@ -6,6 +6,8 @@ import 'package:flutter_firechat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final _fireStore = FirebaseFirestore.instance;
+User? loggedInUser;
+
 
 
 class ChatScreen extends StatefulWidget {
@@ -21,7 +23,6 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final _auth = FirebaseAuth.instance;
-  User? loggedInUser;
   late String messageText;
   TextEditingController messageTextController = TextEditingController();
 
@@ -126,17 +127,18 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessageBubble extends StatelessWidget {
-  MessageBubble({required this.sender, required this.text});
+  MessageBubble({required this.sender, required this.text, required this.isMe});
 
   final String sender;
   final String text;
+  final bool isMe;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: sender == 'kev@gmail.com' ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: sender == loggedInUser!.email ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
@@ -152,7 +154,7 @@ class MessageBubble extends StatelessWidget {
               bottomRight: Radius.circular(30.0),
             ),
             elevation: 5.0,
-            color: sender == 'kev@gmail.com' ? Colors.lightBlueAccent : Colors.red,
+            color: sender == loggedInUser!.email ? Colors.lightBlueAccent : Colors.red,
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
               child: Text(
@@ -190,8 +192,9 @@ class MessagesStream extends StatelessWidget {
         for (var message in messages) {
           final messageText = message.get('text');
           final messageSender = message.get('sender');
+          final currentUser = loggedInUser!.email;
           final messageBubble =
-          MessageBubble(sender: messageSender, text: messageText);
+          MessageBubble(sender: messageSender, text: messageText, isMe: messageSender == currentUser,);
           messageBubbles.add(messageBubble);
         }
         return Expanded(
