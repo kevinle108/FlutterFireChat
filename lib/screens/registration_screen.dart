@@ -7,8 +7,6 @@ import 'package:flutter_firechat/screens/chat_screen.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 class RegistrationScreen extends StatefulWidget {
-
-
   static String id = 'registration_screen';
 
   @override
@@ -20,7 +18,6 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   late String email;
   late String password;
   bool showSpinner = false;
-
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +50,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   //Do something with the user input.
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your email',
-                ),
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               SizedBox(
                 height: 8.0,
@@ -64,13 +60,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   textAlign: TextAlign.center,
                   obscureText: true,
                   onChanged: (value) {
-                  password = value;
-                  //Do something with the user input.
-                },
-                decoration: kTextFieldDecoration.copyWith(
-                  hintText: 'Enter your password',
-                )
-              ),
+                    password = value;
+                    //Do something with the user input.
+                  },
+                  decoration: kTextFieldDecoration.copyWith(
+                      hintText: 'Enter your password')),
               SizedBox(
                 height: 24.0,
               ),
@@ -85,8 +79,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     showSpinner = true;
                   });
                   try {
-
-                    final UserCredential newUser = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+                    final UserCredential newUser =
+                        await _auth.createUserWithEmailAndPassword(
+                            email: email, password: password);
                     if (newUser != null) {
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
